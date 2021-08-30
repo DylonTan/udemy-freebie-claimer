@@ -18,8 +18,9 @@ const getAllFreeCourseURLs = async () => {
         let urls = [];
 
         for (let course of courses) {
+            const href = await course.getProperty('href');
             // Get course URL from course anchor element
-            const url = await (await course.getProperty('href')).jsonValue();
+            const url = await href?.jsonValue();
 
             // Add URL to array of URLs
             urls.push(url);
@@ -58,13 +59,13 @@ export const loginWithCredentials = async () => {
         const [emailInputEl] = await page.$x('/html/body/div[1]/div[2]/div[1]/div[3]/form/div[1]/div[1]/div/input');
 
         // Enter udemy account email
-        await emailInputEl.type(process.env.UDEMY_ACCOUNT_EMAIL);
+        await emailInputEl.type(process.env.UDEMY_ACCOUNT_EMAIL!);
 
         // Get password input element with xPath
         const [passwordInputEl] = await page.$x('/html/body/div[1]/div[2]/div[1]/div[3]/form/div[1]/div[2]/div/input');
 
         // Enter udemy account password
-        await passwordInputEl.type(process.env.UDEMY_ACCOUNT_PASSWORD);
+        await passwordInputEl.type(process.env.UDEMY_ACCOUNT_PASSWORD!);
 
         // Get login button element with xPath
         const [loginButtonEl] = await page.$x('/html/body/div[1]/div[2]/div[1]/div[3]/form/div[2]/div/input');
@@ -80,8 +81,8 @@ export const scrapeFreeCourses = async () => {
     // Get all free courses URLs
     const coursesURLs = await getAllFreeCourseURLs();
 
-    for (let url of coursesURLs) {
-        await claimFreeCourse(url);
+    for (let url of coursesURLs!) {
+        await claimFreeCourse(url as string);
     }
 };
 

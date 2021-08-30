@@ -5,7 +5,7 @@ const sortMethod = process.argv[0];
 
 const job = new CronJob(
     // Set cron time to 00:00 every day
-    '0 0 * * *',
+    '* * * * *',
     async () => {
         // Initialize Puppeteer
         await initPuppeteer();
